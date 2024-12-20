@@ -1,0 +1,68 @@
+{
+    "manifest_version": 3,
+    "name": "LinkedIn App Integration",
+    "version": "1.0",
+    "description": "A Chrome extension that integrates with a C++ app to monitor LinkedIn tabs and manage heartbeat signals.",
+
+    "permissions": [
+        "tabs",
+        "scripting",
+        "webNavigation",
+        "storage",
+        "activeTab",
+        "declarativeNetRequest"
+
+    ],
+
+
+    "host_permissions": [
+        "https://linkedin.com/*",
+        "https://www.linkedin.com/feed/*",
+        "*://*.linkedin.com/*",
+        "http://localhost:8080/*"
+
+
+    ],
+
+    "background": {
+        "service_worker": "background/background.js",
+        "type": "module"
+    },
+
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "icons/android-face-transformed16.jpg",
+            "48": "icons/android-face-transformed48.jpg",
+            "128": "icons/android-face-transformed128.jpg"
+        }
+    },
+
+    "icons": {
+        "16": "icons/android-face-transformed16.jpg",
+        "48": "icons/android-face-transformed48.jpg",
+        "128": "icons/android-face-transformed128.jpg"
+    },
+
+    "content_scripts": [{
+        "matches": ["*://*.linkedin.com/*", "*://*.cdn.jsdelivr.net/*"],
+        "js": ["content.js"],
+        "run_at": "document_end"
+    }],
+
+    "commands": {
+        "trigger-app-pulse": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+P"
+            },
+            "description": "Send APP_PULSE to the C++ app"
+        }
+    },
+
+    "web_accessible_resources": [{
+        "resources": ["icons/*", "popup.html", "styles.css"],
+        "matches": ["*://*.linkedin.com/*"]
+    }],
+
+    "options_page": "options.html"
+}
